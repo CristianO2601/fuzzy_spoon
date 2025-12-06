@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isis Teran | Food Science Portfolio</title>
+    
+    <!-- Fonts: DM Sans (Humanist Sans) & Playfair Display (Warm Serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- "HUMAN & WARM" PALETTE --- */
+        :root {
+            /* Backgrounds */
+            --bg-body: #FAFAF5;       /* Warm Rice Paper (Not cold white) */
+            --bg-card: #FFFFFF;       /* Pure White */
+            
+            /* Typography */
+            --text-primary: #3D3330;  /* Warm Charcoal (Softer than black) */
+            --text-secondary: #8C847F; /* Warm Taupe */
+            
+            /* Accents */
+            --accent: #D96C5B;        /* Terra-cotta / Spiced Apple */
+            --accent-subtle: #F2E8E4; /* Pale Blush */
+            
+            /* UI Elements */
+            --radius: 24px;           /* Very friendly round corners */
+            --shadow: 0 10px 40px -10px rgba(60, 40, 30, 0.08); /* Warm Shadow */
+            --border: 1px solid rgba(0,0,0,0.03);
+            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* --- GLOBAL RESET --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- NAVIGATION (Frosted Glass Warmth) --- */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(250, 250, 245, 0.85); /* Matches body color but translucent */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+            padding: 1.2rem 0;
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        .brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+        }
+
+        .tabs { display: flex; gap: 15px; }
+        
+        .tab-btn {
+            background: transparent;
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .tab-btn:hover { background: var(--accent-subtle); color: var(--accent); }
+
+        .tab-btn.active {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(217, 108, 91, 0.3);
+        }
+
+        /* --- HERO SECTION (Morning Light) --- */
+        .hero {
+            position: relative;
+            text-align: center;
+            padding: 8rem 20px 6rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Subtle background gradient behind text */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%; height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(250,250,245,0) 70%);
+            z-index: -1;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* --- CONTENT WRAPPER --- */
+        .content-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px 8rem;
+        }
+
+        /* --- LAB CARDS (Paper-like) --- */
+        .lab-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 4rem;
+            margin-bottom: 5rem;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle top line accent */
+        .lab-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+            background: linear-gradient(90deg, var(--accent) 0%, #E8B4A2 100%);
+            opacity: 0.8;
+        }
+
+        .lab-header { margin-bottom: 2.5rem; text-align: center; }
+
+        .lab-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .lab-header span {
+            display: inline-block;
+            background: var(--accent-subtle);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .reflection-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin: 2rem 0 4rem 0;
+            position: relative;
+        }
+
+        /* Vertical divider line */
+        .reflection-grid::after {
+            content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 1px;
+            background: linear-gradient(to bottom, transparent, #eee, transparent);
+        }
+
+        .reflection-col h3 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .reflection-col p {
+            font-size: 1.05rem;
+            color: #555;
+            text-align: left; /* Easier to read */
+        }
+
+        /* --- MASONRY GALLERY --- */
+        .gallery {
+            column-count: 3;
+            column-gap: 24px;
+        }
+
+        .gallery img {
+            width: 100%;
+            margin-bottom: 24px;
+            border-radius: 16px;
+            display: block;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .gallery img:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        /* --- REFERENCES SECTION --- */
+        #references-view { display: none; animation: fadeIn 0.6s ease; }
+        
+        .ref-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(0,0,0,0.04);
+            transition: var(--transition);
+        }
+        
+        .ref-card:hover { transform: translateX(5px); border-left: 4px solid var(--accent); }
+
+        .ref-text { font-family: 'DM Sans', sans-serif; font-size: 1rem; color: #555; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .reflection-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .reflection-grid::after { display: none; }
+            .gallery { column-count: 1; }
+            .lab-card { padding: 2rem; }
+            h1 { font-size: 2.8rem; }
+            .hero { padding-top: 5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="nav-container">
+            <div class="brand">Isis Teran</div>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab('portfolio')">Portfolio</button>
+                <button class="tab-btn" onclick="openTab('references')">References</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- TAB 1: PORTFOLIO -->
+    <div id="portfolio-view">
+        
+        <!-- HERO -->
+        <header class="hero">
+            <h1>The Science of Food</h1>
+            <p class="subtitle">Exploring the chemical and physical interactions in culinary systems through hands-on laboratory application.</p>
+        </header>
+
+        <div class="content-wrapper">
+
+            <!-- INTRO -->
+            <div style="text-align: center; max-width: 740px; margin: 0 auto 6rem auto;">
+                <p style="color: var(--text-primary); font-size: 1.25rem; font-family: 'Playfair Display', serif; font-style: italic;">
+                    "Studying Nutrition at UTSA goes beyond textbooks; it is about understanding what truly occurs when we cook. My journey through the Food Science Practicum has been pivotal in connecting scientific theory with the everyday act of food preparation."
+                </p>
+                <div style="margin-top: 1rem; font-size: 0.95rem; color: var(--text-secondary);">
+                    My goal is clear: to master how culinary techniques impact the nutrients that ultimately nourish the body. Each lab has been an opportunity to witness chemical reactions in real-time, moving from abstract concepts to tangible understanding.
+                </div>
+            </div>
+
+            <!-- LAB 4: BREADS -->
+            <article class="lab-card">
+                <div class="lab-header">
+                    <span>Lab 04</span>
+                    <h2>Quick Breads & Yeast Breads</h2>
+                </div>
+                <div class="reflection-grid">
+                    <div class="reflection-col">
+                        <h3>Reason for Selection</h3>
+                        <p>This was one of my favorite labs as it clearly illustrated the critical difference between biological and chemical leavening. The challenge of precision—learning that altering the sequence of mixing steps can ruin the final product—was a valuable lesson in culinary discipline.</p>
+                    </div>
+                    <div class="reflection-col">
+                        <h3>Dietetic Application</h3>
+                        <p>Understanding gluten formation is essential when counseling patients with Celiac disease. Seeing how buckwheat pancakes (dense texture, nutty flavor) differ from wheat products helps me provide realistic expectations for gluten-free alternatives.</p>
+                    </div>
+                </div>
+                <div class="gallery">
+                    <img src="labs/lab4_1.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab4_2.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab4_3.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab4_4.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab4_5.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab4_6.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab4_7.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab4_8.jpg" onerror="this.style.display='none'">
+                </div>
+            </article>
+
+            <!-- LAB 5: FRUIT -->
+            <article class="lab-card">
+                <div class="lab-header">
+                    <span>Lab 05</span>
+                    <h2>Enzymatic Browning & Fruit</h2>
+                </div>
+                <div class="reflection-grid">
+                    <div class="reflection-col">
+                        <h3>Key Takeaways</h3>
+                        <p>I gained a practical understanding of why fruit degrades and how to prevent it. We observed enzymatic browning in action (Polyphenol Oxidase) and how osmosis affects texture. The difference in cellular structure when cooking in water (hypotonic) versus syrup (hypertonic) was visually striking.</p>
+                    </div>
+                    <div class="reflection-col">
+                        <h3>Dietetic Application</h3>
+                        <p>Teaching patients simple preservation techniques, like using citrus juice to prevent oxidation, can reduce food waste. Furthermore, understanding how to manipulate texture is vital for preparing palatable meals for patients with dysphagia or chewing difficulties.</p>
+                    </div>
+                </div>
+                <div class="gallery">
+                    <img src="labs/lab5_1.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab5_2.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab5_3.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab5_4.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab5_5.jpg" onerror="this.style.display='none'">
+                </div>
+            </article>
+
+            <!-- LAB 6: VEGETABLES -->
+            <article class="lab-card">
+                <div class="lab-header">
+                    <span>Lab 06</span>
+                    <h2>Vegetable Cookery & Pigments</h2>
+                </div>
+                <div class="reflection-grid">
+                    <div class="reflection-col">
+                        <h3>Reason for Selection</h3>
+                        <p>The priority here was nutrient retention. It became abundantly clear that steaming is the superior method for preserving vitamins, flavor, and appearance. The yogurt-based Alfredo sauce was a revelation—proving that creamy textures can be achieved without heavy fats if temperature is controlled to prevent curdling.</p>
+                    </div>
+                    <div class="reflection-col">
+                        <h3>Dietetic Application</h3>
+                        <p>Many patients believe healthy food is bland. Demonstrating that vegetables can retain vibrant color and crunch through proper pH control and cooking methods empowers patients to enjoy plant-based diets rather than tolerating them.</p>
+                    </div>
+                </div>
+                <div class="gallery">
+                    <img src="labs/lab6_1.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab6_2.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab6_3.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab6_4.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab6_5.jpg" onerror="this.style.display='none'">
+                </div>
+            </article>
+
+            <!-- LAB 7: FATS -->
+            <article class="lab-card">
+                <div class="lab-header">
+                    <span>Lab 07</span>
+                    <h2>Fats, Oils & Emulsions</h2>
+                </div>
+                <div class="reflection-grid">
+                    <div class="reflection-col">
+                        <h3>Key Takeaways</h3>
+                        <p>The most impactful visual was watching donut holes absorb oil, reinforcing the concept of lipid absorption and smoke points. We analyzed why frying with butter is chemically inefficient compared to high-smoke-point oils. This lab emphasized that fat choice defines both flavor and chemical quality.</p>
+                    </div>
+                    <div class="reflection-col">
+                        <h3>Dietetic Application</h3>
+                        <p>This translates directly to heart-healthy education. Understanding smoke points helps me advise patients on which oils to use for cooking versus finishing, reducing their intake of oxidized lipids and free radicals.</p>
+                    </div>
+                </div>
+                <div class="gallery">
+                    <img src="labs/lab7_1.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab7_2.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab7_3.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab7_4.jpg" onerror="this.style.display='none'">
+                </div>
+            </article>
+
+            <!-- LAB 8: EGGS -->
+            <article class="lab-card">
+                <div class="lab-header">
+                    <span>Lab 08</span>
+                    <h2>Egg Cookery & Substitutions</h2>
+                </div>
+                <div class="reflection-grid">
+                    <div class="reflection-col">
+                        <h3>Reason for Selection</h3>
+                        <p>This lab transformed my understanding of protein coagulation. We compared traditional scrambled eggs against commercial substitutes (Egg Beaters), analyzing texture and nutritional profiles. The tofu brownie experiment was particularly successful, demonstrating functional substitution without compromising flavor.</p>
+                    </div>
+                    <div class="reflection-col">
+                        <h3>Dietetic Application</h3>
+                        <p>I feel much more capable of guiding patients toward healthier options without them feeling restricted. Being able to suggest substitutions like tofu for eggs allows for cholesterol reduction while maintaining protein density.</p>
+                    </div>
+                </div>
+                <div class="gallery">
+                    <img src="labs/lab8_1.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab8_2.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab8_3.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab8_4.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab8_5.jpg" onerror="this.style.display='none'">
+                </div>
+            </article>
+
+            <!-- LAB 9: MILK -->
+            <article class="lab-card">
+                <div class="lab-header">
+                    <span>Lab 09</span>
+                    <h2>Milk & Cheese Cookery</h2>
+                </div>
+                <div class="gallery">
+                    <img src="labs/lab9_1.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab9_2.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab9_3.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab9_4.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab9_5.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab9_6.jpg" onerror="this.style.display='none'">
+                </div>
+            </article>
+
+            <!-- LAB 10: MEAT -->
+            <article class="lab-card">
+                <div class="lab-header">
+                    <span>Lab 10</span>
+                    <h2>Meat Cookery & Safety</h2>
+                </div>
+                <div class="reflection-grid">
+                    <div class="reflection-col">
+                        <h3>Key Takeaways</h3>
+                        <p>Everything revolved around juiciness and safety. I confirmed that exceeding optimal temperatures causes muscle fibers to contract and expel water (syneresis), resulting in dry meat. We focused heavily on internal temperatures to ensure food safety standards were met.</p>
+                    </div>
+                    <div class="reflection-col">
+                        <h3>Dietetic Application</h3>
+                        <p>Food safety is a non-negotiable aspect of dietetics. Beyond flavor, understanding the thermal death time of pathogens ensures I can provide safe cooking guidelines to vulnerable populations, such as the elderly or immunocompromised.</p>
+                    </div>
+                </div>
+                <div class="gallery">
+                    <img src="labs/lab10_1.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab10_2.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab10_3.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab10_4.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab10_5.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab10_6.jpg" onerror="this.style.display='none'">
+                </div>
+            </article>
+
+            <!-- LAB 11: LEGUMES -->
+            <article class="lab-card">
+                <div class="lab-header">
+                    <span>Lab 11</span>
+                    <h2>Legumes & Plant Proteins</h2>
+                </div>
+                <div class="reflection-grid">
+                    <div class="reflection-col">
+                        <h3>Reason for Selection</h3>
+                        <p>Closing with legumes and tofu was impactful. We observed how hard water affects pectic substances, preventing beans from softening, and how salt/soaking can mitigate this. Recipes like tofu noodles and hummus demonstrated the versatility of plant proteins.</p>
+                    </div>
+                    <div class="reflection-col">
+                        <h3>Dietetic Application</h3>
+                        <p>Combining legumes with grains to form complete proteins is a foundational concept. I walk away with practical, affordable menu ideas to offer patients who need high-fiber, low-cost nutrient density.</p>
+                    </div>
+                </div>
+                <div class="gallery">
+                    <img src="labs/lab11_1.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab11_2.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab11_3.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab11_4.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab11_5.jpg" onerror="this.style.display='none'">
+                    <img src="labs/lab11_6.jpg" onerror="this.style.display='none'">
+                </div>
+            </article>
+
+        </div>
+    </div>
+
+    <!-- TAB 2: REFERENCES -->
+    <div id="references-view">
+        <header class="hero">
+            <h1>References & Citations</h1>
+            <p class="subtitle">Scientific foundations supporting the laboratory practices.</p>
+        </header>
+
+        <div class="content-wrapper" style="max-width: 800px;">
+            <div class="ref-card">
+                <p class="ref-text"><strong>Brown, A. (2018).</strong> <em>Understanding Food: Principles and Preparation</em> (6th ed.). Cengage Learning.<br>
+                <span style="font-size: 0.85rem; color: var(--accent);">Used for: General food science principles, gluten development, and leavening agents (Lab 4).</span></p>
+            </div>
+            
+            <div class="ref-card">
+                <p class="ref-text"><strong>McWilliams, M. (2016).</strong> <em>Foods: Experimental Perspectives</em> (8th ed.). Pearson.<br>
+                <span style="font-size: 0.85rem; color: var(--accent);">Used for: Enzymatic browning mechanisms, polyphenol oxidase reactions, and pectin chemistry (Lab 5).</span></p>
+            </div>
+
+            <div class="ref-card">
+                <p class="ref-text"><strong>McGee, H. (2004).</strong> <em>On Food and Cooking: The Science and Lore of the Kitchen</em>. Scribner.<br>
+                <span style="font-size: 0.85rem; color: var(--accent);">Used for: Protein coagulation temperatures (Eggs/Meat), Maillard reaction, and emulsion stability (Lab 7, 8, 10).</span></p>
+            </div>
+
+            <div class="ref-card">
+                <p class="ref-text"><strong>Vaclavik, V. A., & Christian, E. W. (2014).</strong> <em>Essentials of Food Science</em> (4th ed.). Springer.<br>
+                <span style="font-size: 0.85rem; color: var(--accent);">Used for: Vegetable pigment chemistry (Chlorophyll/Anthocyanins) and pH effects (Lab 6).</span></p>
+            </div>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 4rem; color: var(--text-secondary); font-size: 0.9rem;">
+        <p>© 2025 Isis Teran | UTSA Nutrition & Dietetics</p>
+    </footer>
+
+    <!-- SIMPLE JS FOR TABS -->
+    <script>
+        function openTab(tabName) {
+            document.getElementById('portfolio-view').style.display = 'none';
+            document.getElementById('references-view').style.display = 'none';
+            
+            const buttons = document.getElementsByClassName('tab-btn');
+            for (let btn of buttons) {
+                btn.classList.remove('active');
+            }
+
+            document.getElementById(tabName + '-view').style.display = 'block';
+            event.currentTarget.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
