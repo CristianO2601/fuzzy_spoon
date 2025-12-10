@@ -1,0 +1,1580 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen de Estudio - Capítulos 1 y 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #764ba2;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .question-block {
+            background: #f8f9fa;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .question-number {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .chapter-tag {
+            background: #764ba2;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .option input[type="radio"],
+        .option input[type="checkbox"] {
+            margin-right: 12px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            color: #155724;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            color: #721c24;
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .check-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: transform 0.2s;
+        }
+
+        .check-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .check-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        .score-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .score-title {
+            font-weight: bold;
+            color: #764ba2;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .score-value {
+            font-size: 2em;
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .score-display {
+                position: static;
+                margin-bottom: 20px;
+            }
+
+            .question-header {
+                gap: 10px;
+            }
+        }
+
+        .explanation-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+
+        .source-tag {
+            font-size: 0.85em;
+            color: #666;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        .final-section {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+        }
+
+        .final-section h2 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .restart-btn {
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: white;
+            color: #764ba2;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
+            transition: transform 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <div class="score-display">
+        <div class="score-title">Tu Puntuación</div>
+        <div class="score-value"><span id="score">0</span> / <span id="total">30</span></div>
+        <div style="text-align: center; margin-top: 10px; color: #666;">
+            <span id="percentage">0%</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>🍽️ Examen de Estudio 🍽️</h1>
+        <div class="subtitle">Capítulos 1 y 2: Food Selection & Food Evaluation</div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar">0%</div>
+        </div>
+
+        <!-- PREGUNTA 1 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 1</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                ¿Cuál es la mejor definición de "flavor" (sabor)?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q1" value="a">
+                    Taste + Mouthfeel
+                </label>
+                <label class="option">
+                    <input type="radio" name="q1" value="b">
+                    Taste + Crunch + Saltiness
+                </label>
+                <label class="option">
+                    <input type="radio" name="q1" value="c" data-correct="true">
+                    Taste + Odor + Mouthfeel
+                </label>
+                <label class="option">
+                    <input type="radio" name="q1" value="d">
+                    Solo Taste
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q1', 1)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback1">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Flavor = Taste + Aroma (Odor). El sabor completo de un alimento es la combinación del gusto (taste), el aroma (odor) y las sensaciones táctiles en la boca (mouthfeel).
+                    <div class="source-tag">[FUENTE: Diapositiva 11, Cap 1]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 2 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 2</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                ¿Cuántos sabores básicos existen según las Dietary Guidelines actuales?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q2" value="a">
+                    4 sabores
+                </label>
+                <label class="option">
+                    <input type="radio" name="q2" value="b">
+                    5 sabores
+                </label>
+                <label class="option">
+                    <input type="radio" name="q2" value="c" data-correct="true">
+                    6 sabores
+                </label>
+                <label class="option">
+                    <input type="radio" name="q2" value="d">
+                    7 sabores
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q2', 2)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback2">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Los 6 sabores básicos son: Sweet (dulce), Sour (ácido), Bitter (amargo), Salty (salado), Umami (sabroso) y Oleogustus (grasa).
+                    <div class="source-tag">[FUENTE: Diapositiva 11, Cap 1]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 3 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 3</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                ¿Qué sabor está asociado con el glutamato presente en carnes, caldos y salsa de soya?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q3" value="a">
+                    Sweet
+                </label>
+                <label class="option">
+                    <input type="radio" name="q3" value="b" data-correct="true">
+                    Umami
+                </label>
+                <label class="option">
+                    <input type="radio" name="q3" value="c">
+                    Oleogustus
+                </label>
+                <label class="option">
+                    <input type="radio" name="q3" value="d">
+                    Salty
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q3', 3)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback3">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Umami (savory) es el sabor asociado con el glutamato, común en carnes, caldos y salsa de soya. Es el quinto sabor básico reconocido.
+                    <div class="source-tag">[FUENTE: Diapositiva 11, Cap 1]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 4 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 4</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                ¿Qué característica NO es un requisito para la certificación Halal?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q4" value="a">
+                    Prohibición de cerdo
+                </label>
+                <label class="option">
+                    <input type="radio" name="q4" value="b">
+                    Prohibición de alcohol
+                </label>
+                <label class="option">
+                    <input type="radio" name="q4" value="c" data-correct="true">
+                    No mezclar carne con lácteos
+                </label>
+                <label class="option">
+                    <input type="radio" name="q4" value="d">
+                    Sacrificio ritual con el nombre de Alá
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q4', 4)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback4">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> La prohibición de mezclar carne con lácteos es un requisito KOSHER (judaísmo), no Halal. El Islam permite combinar carne y lácteos.
+                    <div class="source-tag">[FUENTE: Diapositivas 15-16, Cap 1]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 5 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 5</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                En las leyes dietéticas Kosher, ¿qué alimentos NO están permitidos?
+                <br><small style="color: #666;">(Selecciona todas las correctas)</small>
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="checkbox" name="q5" value="a" data-correct="true">
+                    Cerdo
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q5" value="b" data-correct="true">
+                    Mariscos (shellfish)
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q5" value="c">
+                    Pescado con escamas
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q5" value="d" data-correct="true">
+                    Mezclar carne con lácteos en la misma comida
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswerMultiple('q5', 5)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback5">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Las leyes Kosher prohíben: cerdo, mariscos (shellfish), y mezclar carne con lácteos. El pescado con escamas SÍ está permitido.
+                    <div class="source-tag">[FUENTE: Diapositivas 15-16, Cap 1]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 6 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 6</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                ¿Cuál es la certificación correcta para alimentos Kosher?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q6" value="a">
+                    Islamic Services of America
+                </label>
+                <label class="option">
+                    <input type="radio" name="q6" value="b" data-correct="true">
+                    Organized Kashruth Laboratories (símbolo K o U)
+                </label>
+                <label class="option">
+                    <input type="radio" name="q6" value="c">
+                    USDA Organic
+                </label>
+                <label class="option">
+                    <input type="radio" name="q6" value="d">
+                    Non-GMO Project
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q6', 6)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback6">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> La certificación Kosher es otorgada por Organized Kashruth Laboratories (K) y OU Kosher Supervision Service (U).
+                    <div class="source-tag">[FUENTE: Diapositiva 16, Cap 1]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 7 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 7</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                ¿Cuántas recomendaciones principales tienen las Dietary Guidelines for Americans 2020-2025?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q7" value="a">
+                    3 recomendaciones
+                </label>
+                <label class="option">
+                    <input type="radio" name="q7" value="b" data-correct="true">
+                    4 recomendaciones
+                </label>
+                <label class="option">
+                    <input type="radio" name="q7" value="c">
+                    5 recomendaciones
+                </label>
+                <label class="option">
+                    <input type="radio" name="q7" value="d">
+                    6 recomendaciones
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q7', 7)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback7">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Las DGA 2020-2025 tienen 4 recomendaciones: 1) Seguir patrón saludable en cada etapa, 2) Elegir alimentos densos en nutrientes, 3) Enfocarse en balance, 4) Limitar azúcares, grasas saturadas, sodio y alcohol.
+                    <div class="source-tag">[FUENTE: Diapositiva 25, Cap 1]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 8 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 8</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                Según MyPlate, ¿qué porcentaje del plato deben ocupar las frutas y vegetales combinados?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q8" value="a">
+                    25%
+                </label>
+                <label class="option">
+                    <input type="radio" name="q8" value="b">
+                    33%
+                </label>
+                <label class="option">
+                    <input type="radio" name="q8" value="c" data-correct="true">
+                    50%
+                </label>
+                <label class="option">
+                    <input type="radio" name="q8" value="d">
+                    75%
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q8', 8)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback8">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> MyPlate recomienda que las frutas y vegetales ocupen la MITAD (50%) del plato. Los granos y proteínas ocupan el otro 50% (25% cada uno).
+                    <div class="source-tag">[FUENTE: Diapositiva 26, Cap 1]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 9 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 9</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                ¿Qué patrón dietético es especialmente recomendado para reducir la presión arterial?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q9" value="a" data-correct="true">
+                    DASH (Dietary Approaches to Stop Hypertension)
+                </label>
+                <label class="option">
+                    <input type="radio" name="q9" value="b">
+                    Ketogenic Diet
+                </label>
+                <label class="option">
+                    <input type="radio" name="q9" value="c">
+                    Paleo Diet
+                </label>
+                <label class="option">
+                    <input type="radio" name="q9" value="d">
+                    Atkins Diet
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q9', 9)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback9">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> DASH (Dietary Approaches to Stop Hypertension) es un patrón dietético diseñado específicamente para reducir la presión arterial. Limita sodio y enfatiza frutas, vegetales y lácteos bajos en grasa.
+                    <div class="source-tag">[FUENTE: Diapositivas 29-30, Cap 1]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 10 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 10</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                ¿Cuál es la novedad principal de las DGA 2020-2025 comparadas con ediciones anteriores?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q10" value="a">
+                    Eliminación de MyPlate
+                </label>
+                <label class="option">
+                    <input type="radio" name="q10" value="b" data-correct="true">
+                    Inclusión de guías para embarazo, lactancia e infantes por primera vez
+                </label>
+                <label class="option">
+                    <input type="radio" name="q10" value="c">
+                    Prohibición de alimentos procesados
+                </label>
+                <label class="option">
+                    <input type="radio" name="q10" value="d">
+                    Requerimiento obligatorio de suplementos vitamínicos
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q10', 10)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback10">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Las DGA 2020-2025 incluyen por PRIMERA VEZ guías específicas para embarazo, lactancia, infantes, niños y adolescentes. Ediciones anteriores no cubrían estas etapas de vida.
+                    <div class="source-tag">[FUENTE: Diapositiva 24, Cap 1]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 11 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 11</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                ¿Qué es un alimento funcional según la Academy of Nutrition and Dietetics?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q11" value="a">
+                    Solo suplementos vitamínicos
+                </label>
+                <label class="option">
+                    <input type="radio" name="q11" value="b" data-correct="true">
+                    Alimentos convencionales, modificados o sintetizados que proveen beneficios más allá de nutrición básica
+                </label>
+                <label class="option">
+                    <input type="radio" name="q11" value="c">
+                    Solo alimentos orgánicos certificados
+                </label>
+                <label class="option">
+                    <input type="radio" name="q11" value="d">
+                    Alimentos bajos en calorías
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q11', 11)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback11">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Alimentos funcionales incluyen: alimentos convencionales (tomates con licopeno), modificados (jugo fortificado con calcio) y sintetizados (oligosacáridos prebióticos) que proveen beneficios más allá de la nutrición básica.
+                    <div class="source-tag">[FUENTE: Diapositivas 31-33, Cap 1]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 12 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 12</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                ¿Cuáles agencias federales son responsables de la seguridad de los GMOs?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q12" value="a" data-correct="true">
+                    FDA, USDA, EPA
+                </label>
+                <label class="option">
+                    <input type="radio" name="q12" value="b">
+                    FDA, CDC, EPA
+                </label>
+                <label class="option">
+                    <input type="radio" name="q12" value="c">
+                    USDA, HHS, NIH
+                </label>
+                <label class="option">
+                    <input type="radio" name="q12" value="d">
+                    EPA, CDC, NIH
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q12', 12)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback12">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> FDA (seguridad alimentaria para humanos), USDA (seguridad para plantas/agricultura), y EPA (seguridad ambiental y pesticidas) regulan los GMOs.
+                    <div class="source-tag">[FUENTE: Contexto del examen]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 13 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 13</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                ¿Cuáles son los GMOs más comunes en Estados Unidos?
+                <br><small style="color: #666;">(Selecciona todas las correctas)</small>
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="checkbox" name="q13" value="a" data-correct="true">
+                    Soya
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q13" value="b" data-correct="true">
+                    Maíz
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q13" value="c" data-correct="true">
+                    Canola
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q13" value="d">
+                    Tomates
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q13" value="e" data-correct="true">
+                    Papaya
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q13" value="f" data-correct="true">
+                    Cotton seed/oil
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswerMultiple('q13', 13)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback13">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Los GMOs principales en USA son: soya, maíz, algodón (cotton), canola, sugar beets, papaya, calabaza de verano, alfalfa, manzanas y papas. Los tomates GMO ya NO están disponibles comercialmente.
+                    <div class="source-tag">[FUENTE: Diapositivas 19-20, Cap 1]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 14 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 14</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                ¿Qué porcentaje de ingredientes orgánicos debe tener un producto para usar el sello USDA Organic?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q14" value="a">
+                    70%
+                </label>
+                <label class="option">
+                    <input type="radio" name="q14" value="b">
+                    85%
+                </label>
+                <label class="option">
+                    <input type="radio" name="q14" value="c" data-correct="true">
+                    95%
+                </label>
+                <label class="option">
+                    <input type="radio" name="q14" value="d">
+                    100%
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q14', 14)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback14">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Productos con "Organic" o "100% Organic" pueden usar el sello USDA. "Organic" requiere 95% de ingredientes orgánicos. "Made with Organic" (70%) NO puede usar el sello.
+                    <div class="source-tag">[FUENTE: Diapositiva 21, Cap 1]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 15 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 15</span>
+                <span class="chapter-tag">Capítulo 1</span>
+            </div>
+            <div class="question-text">
+                Si una salsa de pasta tiene 68% de ingredientes orgánicos, ¿qué etiquetado es correcto?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q15" value="a">
+                    "Organic" con sello USDA
+                </label>
+                <label class="option">
+                    <input type="radio" name="q15" value="b">
+                    "100% Organic"
+                </label>
+                <label class="option">
+                    <input type="radio" name="q15" value="c" data-correct="true">
+                    Solo listar ingredientes orgánicos en la lista de ingredientes (sin claim frontal)
+                </label>
+                <label class="option">
+                    <input type="radio" name="q15" value="d">
+                    "Made with Organic Tomatoes"
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q15', 15)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback15">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Con menos de 70% orgánico, NO se puede hacer ningún claim en el frente del empaque. Solo se pueden listar los ingredientes orgánicos individuales en la lista de ingredientes.
+                    <div class="source-tag">[FUENTE: Diapositiva 21, Cap 1]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 16 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 16</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                ¿Cuál es la diferencia principal entre evaluación sensorial y objetiva?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q16" value="a" data-correct="true">
+                    Sensorial usa panelistas humanos; Objetiva usa equipos de laboratorio
+                </label>
+                <label class="option">
+                    <input type="radio" name="q16" value="b">
+                    Sensorial es más barata; Objetiva es más cara
+                </label>
+                <label class="option">
+                    <input type="radio" name="q16" value="c">
+                    No hay diferencia significativa
+                </label>
+                <label class="option">
+                    <input type="radio" name="q16" value="d">
+                    Objetiva mide preferencias; Sensorial mide datos físicos
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q16', 16)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback16">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> La evaluación sensorial (subjetiva) usa panelistas humanos para medir características sensoriales y preferencias. La objetiva usa equipos de laboratorio para medir propiedades físicas/químicas de forma reproducible.
+                    <div class="source-tag">[FUENTE: Diapositiva 2, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 17 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 17</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                Un panel de expertos entrenados recibe 3 muestras de jugo codificadas (147, 472, 836). Dos son idénticas y una es diferente. Se les pide identificar cuál es diferente.
+                <br><br><strong>¿Qué prueba es esta?</strong>
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q17" value="a" data-correct="true">
+                    Triangle Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q17" value="b">
+                    Duo-Trio Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q17" value="c">
+                    Paired Comparison
+                </label>
+                <label class="option">
+                    <input type="radio" name="q17" value="d">
+                    Hedonic Test
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q17', 17)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback17">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Triangle Test: 3 muestras, 2 iguales y 1 diferente. Se pregunta "¿cuál es diferente?" Es una prueba discriminativa para detectar diferencias.
+                    <div class="source-tag">[FUENTE: Diapositiva 6, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 18 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 18</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                Una empresa de galletas quiere comparar su nueva receta con su receta estándar. Presentan una muestra "Referencia" y dos muestras codificadas (A y B). Se pregunta: "¿Cuál muestra es igual a la referencia?"
+                <br><br><strong>¿Qué prueba es esta?</strong>
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q18" value="a">
+                    Triangle Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q18" value="b" data-correct="true">
+                    Duo-Trio Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q18" value="c">
+                    Ranking Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q18" value="d">
+                    Paired Preference
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q18', 18)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback18">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Duo-Trio Test: 3 muestras (1 referencia + 2 codificadas). Se pregunta "¿cuál es igual a la referencia?" Útil para comparar productos con un estándar.
+                    <div class="source-tag">[FUENTE: Diapositiva 7, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 19 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 19</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                Un chef quiere saber si sus nuevas galletas son MÁS DULCES que las de la competencia. Presenta dos muestras y pregunta: "¿Cuál es más dulce?"
+                <br><br><strong>¿Qué prueba debe usar?</strong>
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q19" value="a">
+                    Triangle Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q19" value="b" data-correct="true">
+                    Paired Comparison Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q19" value="c">
+                    Hedonic Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q19" value="d">
+                    Duo-Trio Test
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q19', 19)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback19">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Paired Comparison Test: 2 muestras, se pregunta "¿cuál es MÁS _____ (dulce, salado, ácido, etc.)?" Mide intensidad de un atributo específico.
+                    <div class="source-tag">[FUENTE: Diapositiva 8, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 20 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 20</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                Una tienda de quesos presenta 4 muestras (mozzarella, provolone, cheddar, pepper jack) y pide a los panelistas ordenarlas de MENOS SALADO a MÁS SALADO.
+                <br><br><strong>¿Qué prueba es esta?</strong>
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q20" value="a">
+                    Paired Comparison
+                </label>
+                <label class="option">
+                    <input type="radio" name="q20" value="b" data-correct="true">
+                    Ranking Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q20" value="c">
+                    Triangle Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q20" value="d">
+                    Hedonic Test
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q20', 20)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback20">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Ranking Test: número variable de muestras, se ordenan por intensidad de un atributo (dulce, salado, ácido). Útil para comparar múltiples productos.
+                    <div class="source-tag">[FUENTE: Diapositiva 9, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 21 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 21</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                100 consumidores no entrenados prueban un nuevo refresco y califican su aceptación en una escala: 1=me disgusta mucho, 2=me disgusta, 3=neutral, 4=me gusta, 5=me gusta mucho.
+                <br><br><strong>¿Qué prueba es esta?</strong>
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q21" value="a">
+                    Triangle Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q21" value="b">
+                    Paired Comparison
+                </label>
+                <label class="option">
+                    <input type="radio" name="q21" value="c" data-correct="true">
+                    Hedonic Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q21" value="d">
+                    Flavor Profile
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q21', 21)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback21">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Hedonic Test: prueba AFECTIVA (consumer) que mide aceptación/preferencia usando escalas numéricas o caritas. Requiere gran número de consumidores no entrenados.
+                    <div class="source-tag">[FUENTE: Diapositiva 11, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 22 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 22</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                McDonald's presenta dos versiones de hamburguesa a consumidores y pregunta: "¿Cuál prefieres: A o B?"
+                <br><br><strong>¿Qué prueba es esta?</strong>
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q22" value="a" data-correct="true">
+                    Paired Preference Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q22" value="b">
+                    Paired Comparison Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q22" value="c">
+                    Duo-Trio Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q22" value="d">
+                    Triangle Test
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q22', 22)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback22">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Paired Preference Test: prueba AFECTIVA con 2 muestras, pregunta "¿cuál prefieres?" (no mide intensidad de atributos, solo preferencia general). Paired Comparison es ANALÍTICA y pregunta "¿cuál es MÁS _____?"
+                    <div class="source-tag">[FUENTE: Diapositiva 12, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 23 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 23</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                ¿Qué tipo de prueba requiere panelistas ALTAMENTE ENTRENADOS para describir características específicas como "vainilla, caramelo, nuez" en un café?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q23" value="a">
+                    Hedonic Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q23" value="b" data-correct="true">
+                    Flavor Profile (Descriptive Test)
+                </label>
+                <label class="option">
+                    <input type="radio" name="q23" value="c">
+                    Triangle Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q23" value="d">
+                    Paired Preference
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q23', 23)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback23">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Descriptive Tests (Flavor Profile y Texture Profile) requieren panelistas altamente entrenados para cuantificar y describir características sensoriales específicas usando vocabulario especializado.
+                    <div class="source-tag">[FUENTE: Diapositiva 10, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 24 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 24</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                ¿Cuáles son requisitos para formar un panel sensorial?
+                <br><small style="color: #666;">(Selecciona todas las correctas)</small>
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="checkbox" name="q24" value="a" data-correct="true">
+                    Al menos 5 personas
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q24" value="b" data-correct="true">
+                    No haber comido 30-60 minutos antes
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q24" value="c" data-correct="true">
+                    No fumadores
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q24" value="d">
+                    Solo mujeres
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q24" value="e" data-correct="true">
+                    No color-blind (daltónicos)
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="q24" value="f" data-correct="true">
+                    Sin preferencias dietéticas fuertes hacia el alimento a probar
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswerMultiple('q24', 24)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback24">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Requisitos para panelistas: ≥5 personas, no comida 30-60 min antes, no fumadores, no daltónicos, sin preferencias fuertes, mezcla de géneros/edades, libres de resfriados.
+                    <div class="source-tag">[FUENTE: Diapositiva 13, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 25 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 25</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                ¿Qué equipo se usa para medir la VISCOSIDAD (resistencia al flujo) de líquidos como ketchup, pudding o salsas?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q25" value="a">
+                    Penetrometer
+                </label>
+                <label class="option">
+                    <input type="radio" name="q25" value="b" data-correct="true">
+                    Viscometer
+                </label>
+                <label class="option">
+                    <input type="radio" name="q25" value="c">
+                    Texture Analyzer
+                </label>
+                <label class="option">
+                    <input type="radio" name="q25" value="d">
+                    Shortometer
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q25', 25)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback25">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Viscometer mide viscosidad (resistencia al flujo) de líquidos. El Line Spread Test también mide viscosidad midiendo cuánto se extiende un líquido en centímetros.
+                    <div class="source-tag">[FUENTE: Diapositivas 15-16, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 26 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 26</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                ¿Qué equipo se usa para medir la FIRMEZA de frutas y vegetales en la cosecha?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q26" value="a" data-correct="true">
+                    Penetrometer
+                </label>
+                <label class="option">
+                    <input type="radio" name="q26" value="b">
+                    Viscometer
+                </label>
+                <label class="option">
+                    <input type="radio" name="q26" value="c">
+                    Shear Test
+                </label>
+                <label class="option">
+                    <input type="radio" name="q26" value="d">
+                    Shortometer
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q26', 26)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback26">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Penetrometer mide firmeza/terneza simulando dientes mordiendo comida. Mide presión en libras (pounds). Común para frutas/vegetales.
+                    <div class="source-tag">[FUENTE: Diapositivas 15-16, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 27 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 27</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                ¿Qué prueba objetiva se usa para medir la TERNEZA de productos horneados como galletas o pasteles?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q27" value="a">
+                    Penetrometer
+                </label>
+                <label class="option">
+                    <input type="radio" name="q27" value="b">
+                    Viscometer
+                </label>
+                <label class="option">
+                    <input type="radio" name="q27" value="c" data-correct="true">
+                    Shortometer
+                </label>
+                <label class="option">
+                    <input type="radio" name="q27" value="d">
+                    Line Spread Test
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q27', 27)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback27">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Shortometer mide terneza de productos horneados midiendo resistencia al rompimiento. Menor punto de ruptura = más tierno. Similar a texture analyzer pero específico para baked goods.
+                    <div class="source-tag">[FUENTE: Diapositivas 15, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 28 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 28</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                ¿Qué equipo mide propiedades texturales de AMPLIA VARIEDAD de alimentos (dureza, crujiente, suavidad, pegajosidad) mediante compresión, extrusión, penetración?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q28" value="a">
+                    Shortometer
+                </label>
+                <label class="option">
+                    <input type="radio" name="q28" value="b" data-correct="true">
+                    Texture Analyzer
+                </label>
+                <label class="option">
+                    <input type="radio" name="q28" value="c">
+                    Penetrometer
+                </label>
+                <label class="option">
+                    <input type="radio" name="q28" value="d">
+                    Viscometer
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q28', 28)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback28">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> Texture Analyzer es versátil y mide múltiples propiedades texturales (dureza, crispiness, suavidad, pegajosidad, untabilidad) en amplia variedad de alimentos mediante diferentes métodos.
+                    <div class="source-tag">[FUENTE: Diapositivas 15, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 29 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 29</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                ¿Cuál es la VENTAJA principal de la evaluación objetiva sobre la sensorial?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q29" value="a">
+                    Es más cara y requiere más tiempo
+                </label>
+                <label class="option">
+                    <input type="radio" name="q29" value="b" data-correct="true">
+                    Es más confiable, reproducible y no está sujeta a opinión humana
+                </label>
+                <label class="option">
+                    <input type="radio" name="q29" value="c">
+                    Mide preferencias de consumidores
+                </label>
+                <label class="option">
+                    <input type="radio" name="q29" value="d">
+                    Detecta diferencias sensoriales mejor que panelistas
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q29', 29)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback29">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> La evaluación objetiva es más confiable, reproducible, rápida, económica y NO está sujeta a opinión humana. Es esencial para control de calidad rutinario. La sensorial es vital para desarrollo de productos.
+                    <div class="source-tag">[FUENTE: Diapositiva 17, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 30 -->
+        <div class="question-block">
+            <div class="question-header">
+                <span class="question-number">Pregunta 30</span>
+                <span class="chapter-tag">Capítulo 2</span>
+            </div>
+            <div class="question-text">
+                ¿Qué tipo de prueba sensorial es MÁS apropiada para investigación y desarrollo de nuevos productos?
+            </div>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q30" value="a">
+                    Solo pruebas objetivas con equipos
+                </label>
+                <label class="option">
+                    <input type="radio" name="q30" value="b" data-correct="true">
+                    Combinación de pruebas analíticas (discriminativas/descriptivas) Y afectivas (consumer)
+                </label>
+                <label class="option">
+                    <input type="radio" name="q30" value="c">
+                    Solo Hedonic Tests
+                </label>
+                <label class="option">
+                    <input type="radio" name="q30" value="d">
+                    Solo Triangle Tests
+                </label>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q30', 30)">Verificar Respuesta</button>
+            <div class="feedback" id="feedback30">
+                <div class="feedback-title"></div>
+                <div class="explanation-box">
+                    <strong>Explicación:</strong> El desarrollo de productos requiere AMBAS: pruebas analíticas (para detectar diferencias y describir características con paneles entrenados) Y afectivas (para medir aceptación de consumidores). Ambas son complementarias.
+                    <div class="source-tag">[FUENTE: Diapositivas 2-3, Cap 2]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="final-section">
+            <h2>🎉 ¡Examen Completado! 🎉</h2>
+            <p style="font-size: 1.2em; margin-bottom: 10px;">Puntuación Final: <span id="finalScore" style="font-weight: bold; font-size: 1.5em;"></span></p>
+            <p style="margin-top: 10px;">Revisa las explicaciones de cada pregunta para reforzar tu aprendizaje.</p>
+            <button class="restart-btn" onclick="location.reload()">
+                🔄 Reiniciar Examen
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        let score = 0;
+        let totalQuestions = 30;
+        let answeredQuestions = new Set();
+
+        function checkAnswer(questionName, questionNumber) {
+            if (answeredQuestions.has(questionNumber)) {
+                return;
+            }
+
+            const options = document.querySelectorAll(`input[name="${questionName}"]`);
+            let selectedOption = null;
+            let correctOption = null;
+
+            options.forEach(option => {
+                if (option.checked) {
+                    selectedOption = option.parentElement;
+                }
+                if (option.dataset.correct) {
+                    correctOption = option.parentElement;
+                }
+            });
+
+            const feedback = document.getElementById(`feedback${questionNumber}`);
+            const feedbackTitle = feedback.querySelector('.feedback-title');
+            const btn = event.target;
+
+            if (!selectedOption) {
+                alert('Por favor selecciona una respuesta');
+                return;
+            }
+
+            answeredQuestions.add(questionNumber);
+            btn.disabled = true;
+
+            if (selectedOption === correctOption) {
+                selectedOption.classList.add('correct');
+                feedback.classList.add('show', 'correct');
+                feedbackTitle.textContent = '✅ ¡Correcto!';
+                score++;
+            } else {
+                selectedOption.classList.add('incorrect');
+                correctOption.classList.add('correct');
+                feedback.classList.add('show', 'incorrect');
+                feedbackTitle.textContent = '❌ Incorrecto';
+            }
+
+            updateScore();
+            updateProgressBar();
+
+            feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function checkAnswerMultiple(questionName, questionNumber) {
+            if (answeredQuestions.has(questionNumber)) {
+                return;
+            }
+
+            const options = document.querySelectorAll(`input[name="${questionName}"]`);
+            let selectedOptions = [];
+            let correctOptions = [];
+
+            options.forEach(option => {
+                if (option.checked) {
+                    selectedOptions.push(option.value);
+                }
+                if (option.dataset.correct) {
+                    correctOptions.push(option.value);
+                }
+            });
+
+            const feedback = document.getElementById(`feedback${questionNumber}`);
+            const feedbackTitle = feedback.querySelector('.feedback-title');
+            const btn = event.target;
+
+            if (selectedOptions.length === 0) {
+                alert('Por favor selecciona al menos una respuesta');
+                return;
+            }
+
+            answeredQuestions.add(questionNumber);
+            btn.disabled = true;
+
+            const isCorrect = selectedOptions.length === correctOptions.length &&
+                              selectedOptions.every(val => correctOptions.includes(val));
+
+            options.forEach(option => {
+                if (option.dataset.correct) {
+                    option.parentElement.classList.add('correct');
+                } else if (option.checked) {
+                    option.parentElement.classList.add('incorrect');
+                }
+            });
+
+            if (isCorrect) {
+                feedback.classList.add('show', 'correct');
+                feedbackTitle.textContent = '✅ ¡Correcto!';
+                score++;
+            } else {
+                feedback.classList.add('show', 'incorrect');
+                feedbackTitle.textContent = '❌ Incorrecto';
+            }
+
+            updateScore();
+            updateProgressBar();
+
+            feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+            const percentage = Math.round((score / totalQuestions) * 100);
+            document.getElementById('percentage').textContent = percentage + '%';
+            
+            if (answeredQuestions.size === totalQuestions) {
+                document.getElementById('finalScore').textContent = `${score}/${totalQuestions} (${percentage}%)`;
+            }
+        }
+
+        function updateProgressBar() {
+            const progress = (answeredQuestions.size / totalQuestions) * 100;
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = Math.round(progress) + '%';
+        }
+    </script>
+</body>
+</html>
